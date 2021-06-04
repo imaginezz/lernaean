@@ -87,12 +87,12 @@ fn init_index(index: &Path, upstream: &str, origin: &str, dl: &Uri) -> GenResult
 
     Command::new("git")
         .current_dir(index)
-        .args(&["config", "--local", "user.email", "dcjanus@dcjanus.com"])
+        .args(&["config", "--local", "user.email", "imaginezz@outlook.com"])
         .checked_call()?;
 
     Command::new("git")
         .current_dir(index)
-        .args(&["config", "--local", "user.name", "DCjanus"])
+        .args(&["config", "--local", "user.name", "JasonBian"])
         .checked_call()?;
 
     Command::new("git")
@@ -102,7 +102,7 @@ fn init_index(index: &Path, upstream: &str, origin: &str, dl: &Uri) -> GenResult
         .arg("--message")
         .arg("update download url")
         .arg("--author")
-        .arg("DCjanus<dcjanus@dcjanus.com>")
+        .arg("JasonBian<imaginezz@outlook.com>")
         .checked_call()?;
 
     Ok(())
