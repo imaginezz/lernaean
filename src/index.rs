@@ -38,10 +38,11 @@ pub fn init() -> GenResult<()> {
         upstream_index,
         origin,
         dl,
+        api,
         ..
     } = &*GLOBAL_CONFIG;
 
-    init_index(index, upstream_index, origin, dl)?;
+    init_index(index, upstream_index, origin, dl, api)?;
 
     std::thread::spawn(move || loop {
         if let Err(error) = pull_from_upstream(index) {
@@ -58,7 +59,7 @@ pub fn init() -> GenResult<()> {
     Ok(())
 }
 
-fn init_index(index: &Path, upstream: &str, origin: &str, dl: &Uri) -> GenResult<()> {
+fn init_index(index: &Path, upstream: &str, origin: &str, dl: &Uri, api: &Uri) -> GenResult<()> {
     if index.join(".git").exists() {
         return Ok(());
     }
@@ -83,6 +84,7 @@ fn init_index(index: &Path, upstream: &str, origin: &str, dl: &Uri) -> GenResult
     let config = &std::fs::read_to_string(config_path)?;
     let mut doc = serde_json::from_str::<serde_json::Value>(config)?;
     doc["dl"] = serde_json::Value::String(dl.to_string());
+    doc["api"] = serde_json::Value::String(api.to_string());
     std::fs::write(config_path, serde_json::to_string_pretty(&doc)?)?;
 
     Command::new("git")
